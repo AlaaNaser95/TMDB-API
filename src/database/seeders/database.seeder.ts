@@ -6,7 +6,7 @@ import { Genre } from '../entities/genre.entity';
 import { TmdbService } from 'src/modules/tmdb/tmdb.service';
 
 async function bootstrap() {
-  console.log('🌱 Seeder started');
+  console.log('Seeder started');
   const app = await NestFactory.createApplicationContext(AppModule);
   await seedGenres(app);
   await seedMovies(app);
@@ -22,18 +22,15 @@ async function seedGenres(app) {
   const genresToSave = genres.genres.map((genre) => {
     return { name: genre.name, tmdb_id: genre.id };
   });
-  // Seed genres
   await dataSource.getRepository(Genre).save(genresToSave);
 }
 
 async function seedMovies(app) {
   const dataSource = app.get(DataSource);
   const tmdbService = app.get(TmdbService);
-  // Seed movies
   const movies = await tmdbService.listPopularMovies(1);
 
   for (const movie of movies.results) {
-    // 2. Extract genres
     const genreIds = movie.genre_ids;
     const genres: Genre[] = await dataSource.getRepository(Genre).find({
       where: {
