@@ -11,5 +11,5 @@ export class ListMoviesRquestDto extends PaginationRequestDto {
   })
   @IsOptional()
   @IsInt()
-  genreId?: Number;
+  genreId?: number;
 }

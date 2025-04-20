@@ -8,6 +8,7 @@ import { MovieModule } from './modules/movie/movie.module';
 import { GenreModule } from './modules/genre/genre.module';
 import { UserModule } from './modules/user/user.module';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
+import { RatingModule } from './modules/rating/rating.module';
 
 @Module({
   imports: [
@@ -25,9 +26,9 @@ import { WatchlistModule } from './modules/watchlist/watchlist.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE'),
         entities: ['dist/database/entities/*.js'],
-        synchronize: configService.get('DATABASE_SYNC') || false,
+        synchronize: configService.get('DATABASE_SYNC') == 'true' || false,
         autoLoadEntities: true,
-        logging: configService.get('DATABASE_LOGGING') || false,
+        logging: configService.get('DATABASE_LOGGING') == 'true' || false,
         migrationsTableName: 'migrations',
         migrations: ['dist/database/migrations/*.js'],
         seeds: ['dist/database/seeders/**/*.seeder.js'],
@@ -42,6 +43,7 @@ import { WatchlistModule } from './modules/watchlist/watchlist.module';
     GenreModule,
     UserModule,
     WatchlistModule,
+    RatingModule,
   ],
   controllers: [AppController],
   providers: [AppService],

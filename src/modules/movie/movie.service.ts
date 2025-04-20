@@ -12,7 +12,7 @@ import { ListMoviesDto } from './dto/response/listMovies.dto';
 import { MovieDto } from './dto/response/movie.dto';
 import { UpdateMovieDto } from './dto/request/updateMovie.dto';
 import { PaginationResponseDto } from 'src/common/dto/response/paginationResponse.dto';
-import { ListMoviesRquestDto } from './dto/request/listMovies.dto';
+import { ListMoviesRquestDto } from './dto/request/listMoviesRequest.dto';
 
 @Injectable()
 export class MovieService {

@@ -13,7 +13,7 @@ import {
 import { MovieService } from './movie.service';
 import { CreateMovieDto } from './dto/request/createMovie.dto';
 import { PaginationInterceptor } from 'src/common/interceptor/pagination.interceptor';
-import { ListMoviesRquestDto } from './dto/request/listMovies.dto';
+import { ListMoviesRquestDto } from './dto/request/listMoviesRequest.dto';
 import { UpdateMovieDto } from './dto/request/updateMovie.dto';
 
 @Controller('movies')
