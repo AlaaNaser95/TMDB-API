@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TmdbModule } from './modules/tmdb/tmdb.module';
 import { MovieModule } from './modules/movie/movie.module';
 import { GenreModule } from './modules/genre/genre.module';
+import { UserModule } from './modules/user/user.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { GenreModule } from './modules/genre/genre.module';
     TmdbModule,
     MovieModule,
     GenreModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
