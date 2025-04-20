@@ -7,6 +7,7 @@ import { TmdbModule } from './modules/tmdb/tmdb.module';
 import { MovieModule } from './modules/movie/movie.module';
 import { GenreModule } from './modules/genre/genre.module';
 import { UserModule } from './modules/user/user.module';
+import { WatchlistModule } from './modules/watchlist/watchlist.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { UserModule } from './modules/user/user.module';
     MovieModule,
     GenreModule,
     UserModule,
+    WatchlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

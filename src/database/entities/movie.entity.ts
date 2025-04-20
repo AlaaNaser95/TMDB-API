@@ -1,8 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 import { Base } from './base.entity';
 import { Genre } from './genre.entity';
+import { Watchlist } from './watchlist.entity';
 
 @Entity()
 export class Movie extends Base {
@@ -34,4 +35,7 @@ export class Movie extends Base {
   @ManyToMany(() => Genre, (genre) => genre.movies)
   @JoinTable()
   genres: Genre[];
+
+  @OneToMany(() => Watchlist, (watchlist) => watchlist.movie)
+  watchlists: Watchlist[];
 }
