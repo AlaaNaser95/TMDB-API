@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TmdbModule } from './modules/tmdb/tmdb.module';
+import { MovieModule } from './modules/movie/movie.module';
+import { GenreModule } from './modules/genre/genre.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { TmdbModule } from './modules/tmdb/tmdb.module';
       inject: [ConfigService],
     }),
     TmdbModule,
+    MovieModule,
+    GenreModule,
   ],
   controllers: [AppController],
   providers: [AppService],
