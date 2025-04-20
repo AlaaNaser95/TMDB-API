@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { IsNotEmpty, IsString } from 'class-validator';
 import { Base } from './base.entity';
+import { Watchlist } from './watchlist.entity';
 
 @Entity()
 export class User extends Base {
@@ -8,4 +9,7 @@ export class User extends Base {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @OneToMany(() => Watchlist, (watchlist) => watchlist.user)
+  watchlists: Watchlist[];
 }
