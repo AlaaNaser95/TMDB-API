@@ -6,11 +6,17 @@ import { Genre } from '../entities/genre.entity';
 import { TmdbService } from 'src/modules/tmdb/tmdb.service';
 
 async function bootstrap() {
-  console.log('Seeder started');
+  //checking if database is empty or not
   const app = await NestFactory.createApplicationContext(AppModule);
-  await seedGenres(app);
-  await seedMovies(app);
-  console.log('Database has been seeded successfully');
+  const dataSource = app.get(DataSource);
+  const genresCount = await dataSource.getRepository(Genre).count();
+  if (genresCount > 0)
+    console.log('Databases is already seeded, skipping seeding');
+  else {
+    await seedGenres(app);
+    await seedMovies(app);
+    console.log('Database has been seeded successfully');
+  }
   await app.close();
 }
 
@@ -41,7 +47,7 @@ async function seedMovies(app) {
     await dataSource.getRepository(Movie).save({
       originalLanguage: movie.original_language,
       posterLink:
-        'https://image.tmdb.org/t/p/w300_and_h450_bestv2/' + movie.poster_path,
+        'https://image.tmdb.org/t/p/w300_and_h450_bestv2' + movie.poster_path,
       title: movie.title,
       overview: movie.overview,
       releaseDate: movie.release_date,

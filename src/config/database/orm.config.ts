@@ -6,8 +6,8 @@ const env = process.env;
 
 const ormConfig = new DataSource({
   type: 'mysql',
-  host: 'mysql',
-  port: 3306,
+  host: env.DATABASE_HOST,
+  port: parseInt(env.DATABASE_PORT ? env.DATABASE_PORT : '3306'),
   username: env.DATABASE_USERNAME,
   password: env.DATABASE_PASSWORD,
   database: env.DATABASE,

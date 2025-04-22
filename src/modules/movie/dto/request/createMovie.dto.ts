@@ -1,11 +1,4 @@
-import {
-  ArrayNotEmpty,
-  IsArray,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateMovieDto {
   @IsNotEmpty()
   @IsString()
@@ -29,5 +22,5 @@ export class CreateMovieDto {
 
   @IsNotEmpty()
   @IsNumber({}, { each: true })
-  genreIds: Number[];
+  genreIds: number[];
 }

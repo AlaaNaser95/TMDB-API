@@ -11,5 +11,5 @@ export class UpdateMovieDto {
   @IsArray()
   @IsOptional()
   @IsInt({ each: true })
-  genreIds?: Number[];
+  genreIds?: number[];
 }
