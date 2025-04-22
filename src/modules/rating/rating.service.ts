@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/database/entities/user.entity';
@@ -6,6 +6,8 @@ import { Movie } from 'src/database/entities/movie.entity';
 import { Rating } from 'src/database/entities/rating.entity';
 import { RatingDto } from './dto/response/rating.dto';
 import { SaveRatingDto } from './dto/request/saveRating.dto';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class RatingService {
@@ -16,6 +18,7 @@ export class RatingService {
     private ratingRepository: Repository<Rating>,
     @InjectRepository(Movie)
     private movieRepository: Repository<Movie>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async saveMovieRating(movieId, SaveRatingDto: SaveRatingDto) {
@@ -64,5 +67,6 @@ export class RatingService {
       avgRating: ratingStatistic.avg,
       ratingsCount: ratingStatistic.count,
     });
+    await this.cacheManager.del('movies-list');
   }
 }

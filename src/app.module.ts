@@ -9,12 +9,17 @@ import { GenreModule } from './modules/genre/genre.module';
 import { UserModule } from './modules/user/user.module';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { RatingModule } from './modules/rating/rating.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [],
+    }),
+    CacheModule.register({
+      isGlobal: true,
+      ttl: 0,
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -26,9 +31,13 @@ import { RatingModule } from './modules/rating/rating.module';
         password: configService.get('DATABASE_PASSWORD'),
         database: configService.get('DATABASE'),
         entities: ['dist/database/entities/*.js'],
-        synchronize: configService.get('DATABASE_SYNC') == 'true' || false,
+        synchronize: configService.get('DATABASE_SYNC')
+          ? configService.get('DATABASE_SYNC') == 'true'
+          : false,
         autoLoadEntities: true,
-        logging: configService.get('DATABASE_LOGGING') == 'true' || false,
+        logging: configService.get('DATABASE_LOGGING')
+          ? configService.get('DATABASE_LOGGING')
+          : false,
         migrationsTableName: 'migrations',
         migrations: ['dist/database/migrations/*.js'],
         seeds: ['dist/database/seeders/**/*.seeder.js'],

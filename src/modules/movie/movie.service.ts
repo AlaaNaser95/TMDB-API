@@ -1,18 +1,22 @@
 import {
   BadRequestException,
   HttpException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Genre } from 'src/database/entities/genre.entity';
 import { Movie } from 'src/database/entities/movie.entity';
-import { DataSource, In, Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { ListMoviesDto } from './dto/response/listMovies.dto';
 import { MovieDto } from './dto/response/movie.dto';
 import { UpdateMovieDto } from './dto/request/updateMovie.dto';
 import { PaginationResponseDto } from 'src/common/dto/response/paginationResponse.dto';
 import { ListMoviesRquestDto } from './dto/request/listMoviesRequest.dto';
+import { AppHelper } from 'src/common/helpers/app.helper';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class MovieService {
@@ -21,6 +25,7 @@ export class MovieService {
     private moviesRepository: Repository<Movie>,
     @InjectRepository(Genre)
     private genreRepository: Repository<Genre>,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   async createMovie(createMovieDto) {
@@ -49,6 +54,7 @@ export class MovieService {
           genres,
         }),
       );
+      await this.cacheManager.del('movies-list');
       return {
         success: true,
         message: 'Movie has been created successfully',
@@ -80,6 +86,19 @@ export class MovieService {
     }
   }
 
+  async listAllMovies() {
+    try {
+      const movies = await AppHelper.getOrSetCache(
+        this.cacheManager,
+        'movies-list',
+        async () => await this.moviesRepository.find(),
+      );
+      return movies.map((movie) => new ListMoviesDto(movie));
+    } catch (error) {
+      console.log('Something went wrong:', error);
+      throw error;
+    }
+  }
   async getMovie(id: number) {
     const movie = await this.moviesRepository.findOne({
       where: { id },
@@ -112,6 +131,7 @@ export class MovieService {
         Object.assign(movie, { ...updateMovieDto });
       }
       await this.moviesRepository.save(movie);
+      await this.cacheManager.del('movies-list');
       return {
         success: true,
         message: 'Movie has been updated successfully',
@@ -123,6 +143,7 @@ export class MovieService {
 
   async deleteMovie(id: number) {
     await this.moviesRepository.softDelete(id);
+    await this.cacheManager.del('movies-list');
     return { success: true, message: 'Movie has been deleted successfully;' };
   }
 
