@@ -39,6 +39,11 @@ export class MovieController {
     return await this.movieService.listMovies(listMoviesRquestDto);
   }
 
+  @Get('all')
+  async listAllMovies() {
+    return await this.movieService.listAllMovies();
+  }
+
   @Get(':movieId')
   async getMovie(@Param('movieId', ParseIntPipe) movieId: number) {
     return await this.movieService.getMovie(movieId);
