@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Base } from './base.entity';
 import { Watchlist } from './watchlist.entity';
 import { Rating } from './rating.entity';
@@ -10,6 +10,16 @@ export class User extends Base {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @Column('varchar', { unique: true, length: 100 })
+  @IsEmail()
+  @IsNotEmpty()
+  email: string;
+
+  @Column()
+  @IsString()
+  @IsNotEmpty()
+  password: string;
 
   @OneToMany(() => Watchlist, (watchlist) => watchlist.user)
   watchlists: Watchlist[];

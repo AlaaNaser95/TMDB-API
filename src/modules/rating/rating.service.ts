@@ -21,8 +21,9 @@ export class RatingService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
-  async saveMovieRating(movieId, SaveRatingDto: SaveRatingDto) {
-    const { score, userId } = SaveRatingDto;
+  async saveMovieRating(req, movieId, SaveRatingDto: SaveRatingDto) {
+    const { score } = SaveRatingDto;
+    const userId = req.user.id;
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) throw new NotFoundException('User is invalid');
     const movie = await this.movieRepository.findOneBy({ id: movieId });
@@ -46,7 +47,8 @@ export class RatingService {
     return ratings.map((ratings) => ratings.score);
   }
 
-  async listUserRatings(userId) {
+  async listUserRatings(req) {
+    const userId = req.user.id;
     const user = await this.userRepository.findOneBy({ id: userId });
     if (!user) throw new NotFoundException('User is invalid');
     const ratings = await this.ratingRepository.find({

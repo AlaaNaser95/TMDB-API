@@ -1,24 +1,28 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Param,
   ParseIntPipe,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { RatingService } from './rating.service';
 import { SaveRatingDto } from './dto/request/saveRating.dto';
+import { JwtAuthGuard } from 'src/authentication/guards/jwt-auth.guard';
 
 @Controller()
 export class RatingController {
   constructor(private ratingService: RatingService) {}
+  @UseGuards(JwtAuthGuard)
   @Post('movies/:movieId/ratings')
   async saveMovieRating(
     @Param('movieId', ParseIntPipe) movieId: number,
     @Body() saveRatingDto: SaveRatingDto,
+    @Req() req,
   ) {
-    return this.ratingService.saveMovieRating(movieId, saveRatingDto);
+    return this.ratingService.saveMovieRating(req, movieId, saveRatingDto);
   }
 
   @Get('movies/:movieId/ratings')
@@ -26,8 +30,9 @@ export class RatingController {
     return this.ratingService.listMovieRatings(movieId);
   }
 
-  @Get('users/:userId/ratings')
-  async listUserRatings(@Param('userId', ParseIntPipe) userId: number) {
-    return this.ratingService.listUserRatings(userId);
+  @UseGuards(JwtAuthGuard)
+  @Get('ratings')
+  async listUserRatings(@Req() req) {
+    return this.ratingService.listUserRatings(req);
   }
 }
