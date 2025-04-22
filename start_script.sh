@@ -13,6 +13,6 @@ echo "run seeders"
 npm run seed:run
 echo "Starting the app"
 # For dev environmenr
-# npm run start:dev
+npm run start:dev
 # for live environment
-npm run start:prod
+# npm run start:prod
