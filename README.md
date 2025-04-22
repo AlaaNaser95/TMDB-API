@@ -16,7 +16,7 @@ This is a production-ready backend application built with **NestJS**, using **My
 │   └── ...
 ├── docker-compose.yml      # Docker Compose setup
 ├── Dockerfile              # Dockerfile for production
-├── .env                    # Environment variables
+├── .env.example                    # Environment variables
 ├── start_script.sh                # Startup script for migrations and app start for docker
 ├── package.json
 ├── package.lock.json
