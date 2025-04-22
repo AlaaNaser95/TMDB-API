@@ -10,12 +10,14 @@ import { UserModule } from './modules/user/user.module';
 import { WatchlistModule } from './modules/watchlist/watchlist.module';
 import { RatingModule } from './modules/rating/rating.module';
 import { CacheModule } from '@nestjs/cache-manager';
+import authConfig from './config/auth/auth.config';
+import { AuthModule } from './authentication/auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [],
+      load: [authConfig],
     }),
     CacheModule.register({
       isGlobal: true,
@@ -53,6 +55,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     UserModule,
     WatchlistModule,
     RatingModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

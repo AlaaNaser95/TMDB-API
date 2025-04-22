@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { MovieService } from './movie.service';
@@ -15,16 +16,19 @@ import { CreateMovieDto } from './dto/request/createMovie.dto';
 import { PaginationInterceptor } from 'src/common/interceptor/pagination.interceptor';
 import { ListMoviesRquestDto } from './dto/request/listMoviesRequest.dto';
 import { UpdateMovieDto } from './dto/request/updateMovie.dto';
+import { JwtAuthGuard } from 'src/authentication/guards/jwt-auth.guard';
 
 @Controller('movies')
 export class MovieController {
   constructor(private movieService: MovieService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async createMovie(@Body() createMovieDto: CreateMovieDto) {
     return await this.movieService.createMovie(createMovieDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Put(':movieId')
   async updateMovie(
     @Param('movieId', ParseIntPipe) movieId: number,
@@ -49,6 +53,7 @@ export class MovieController {
     return await this.movieService.getMovie(movieId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':movieId')
   async deleteMovie(@Param('movieId', ParseIntPipe) movieId: number) {
     return await this.movieService.deleteMovie(movieId);

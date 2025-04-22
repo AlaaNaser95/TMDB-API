@@ -5,8 +5,4 @@ export class SaveRatingDto {
   @Min(1)
   @Max(10)
   score: number;
-
-  @IsNotEmpty()
-  @IsInt()
-  userId: number;
 }
