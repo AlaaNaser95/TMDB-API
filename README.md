@@ -65,8 +65,11 @@ This will:
 - Start MySQL containers
 - Run migrations and seeders to seed database with first page of TMDB popular movies along with all Genres.
 - Start the NestJS app on `http://localhost:8080`
-- Create new user and login to get access token for authentication.
-- Make sure to update port according what is provided in .env file.
+
+## Steps to use the App
+
+- After running the App, create new user and login to get access token for authentication.
+- Make sure to update port according what you provide in .env file.
 
 ## API Docs
 
